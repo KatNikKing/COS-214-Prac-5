@@ -3,11 +3,9 @@
 
 #include "ReportType.h"
 #include "CampusComponent.h"
-// #include "Incident.h"
+#include "Incident.h"
 
 using namespace std;
-
-class Incident;
 
 struct Report {
     CampusComponent* affectedArea;
