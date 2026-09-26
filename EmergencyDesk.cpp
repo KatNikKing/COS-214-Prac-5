@@ -1,6 +1,10 @@
 #include "EmergencyDesk.h"
 #include "CampusCoordinator.h"
+#include "RestrictAccessCommand.h"
 #include "OperatorConsole.h"
+#include "DispatchUnitCommand.h"
+#include "SendAlertCommand.h"
+#include "HandleIncidentCommand.h"
 #include "ResponseUnit.h"
 
 EmergencyDesk::EmergencyDesk(Coordinator* coordinator)

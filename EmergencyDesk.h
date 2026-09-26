@@ -12,6 +12,17 @@
 #include "CampusComponent.h"
 
 class EmergencyDesk {
+    private:
+        Coordinator* coordinator;
+        OperatorConsole* console;
+        SecurityService* security;
+        MedicalService* medical;
+        FacilitiesService* facilities;
+        AccessControlService* access;
+        AlertService* alerts;
+        Incident* currentIncident;
+        vector<ResponseUnit*> dispatchedUnits;
+
     public:
         EmergencyDesk(Coordinator* coordinator);
         ~EmergencyDesk();
@@ -27,16 +38,6 @@ class EmergencyDesk {
         bool registerService(AccessControlService* service);
         bool registerService(AlertService* service);
         
-    private:
-        Coordinator* coordinator;
-        OperatorConsole* console;
-        SecurityService* security;
-        MedicalService* medical;
-        FacilitiesService* facilities;
-        AccessControlService* access;
-        AlertService* alerts;
-        Incident* currentIncident;
-        vector<ResponseUnit*> dispatchedUnits;
 };
 
 #endif // EMERGENCY_DESK_H
