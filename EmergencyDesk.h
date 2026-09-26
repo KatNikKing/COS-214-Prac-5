@@ -1,31 +1,39 @@
 #ifndef EMERGENCY_DESK_H
 #define EMERGENCY_DESK_H
 
-class Coordinator;
-class OperatorConsole;
-class ResponseService;
-class AccessControlService;
-class AlertService;
-class Incident;
-class CampusComponent;
+#include "Coordinator.h"
+#include "OperatorConsole.h"
+#include "SecurityService.h"
+#include "MedicalService.h"
+#include "FacilitiesService.h"
+#include "AccessControlService.h"
+#include "AlertService.h"
+#include "Incident.h"
+#include "CampusComponent.h"
 
 class EmergencyDesk {
     public:
-        EmergencyDesk(Coordinator* coordinator, OperatorConsole* console, ResponseService* security, ResponseService* medical, 
-                    ResponseService* facilities, AccessControlService* access, AlertService* alerts);
+        EmergencyDesk(Coordinator* coordinator);
         ~EmergencyDesk();
-        int respondToFire(Incident* incident, CampusComponent* area);
-        int respondToMedical(Incident* incident, CampusComponent* area, bool alertCampus);
+        int handleIncident(Incident* incident);
+        int respondToFire(Incident* incident);
         void standDown(int steps);
-
+        bool registerService(SecurityService* service);
+        bool registerService(MedicalService* service);
+        bool registerService(FacilitiesService* service);
+        bool registerService(AccessControlService* service);
+        bool registerService(AlertService* service);
+        
     private:
         Coordinator* coordinator;
         OperatorConsole* console;
-        ResponseService* security;
-        ResponseService* medical;
-        ResponseService* facilities;
+        SecurityService* security;
+        MedicalService* medical;
+        FacilitiesService* facilities;
         AccessControlService* access;
         AlertService* alerts;
+        Incident* currentIncident;
+        int steps;
 };
 
 #endif // EMERGENCY_DESK_H

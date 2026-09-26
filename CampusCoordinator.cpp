@@ -105,7 +105,7 @@ void CampusCoordinator::notify(Report report) {
         }
 
         case ReportType::INCIDENT_REPORTED:
-            for (Report report : incident->reports)
+            for (Report report : report.incident->reports)
                 notify(report);
             return;
 

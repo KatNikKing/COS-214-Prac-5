@@ -10,10 +10,6 @@ void AlertService::receiveReport(Report report) {
 }
 
 void AlertService::sendAlert(string message) {
-    if (message == "") {
-        cout << "Failed to send alert. No message to send.\n";
-        return;
-    }
-
+    if (message == "") return;
     cout << "=====\nSENDING ALERT...\nMessage:\n" << message << "\n=====\n";
 }

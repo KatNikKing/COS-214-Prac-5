@@ -14,3 +14,7 @@ void SecurityService::receiveReport(Report report) {
         }
     }
 }
+
+string SecurityService::toString() {
+    return "Security";
+}

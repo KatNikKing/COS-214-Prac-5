@@ -16,3 +16,7 @@ void FacilitiesService::receiveReport(Report report) {
         }
     }
 }
+
+string FacilitiesService::toString() {
+    return "Facilities";
+}

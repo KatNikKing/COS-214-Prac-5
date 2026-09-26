@@ -52,3 +52,12 @@ void ResponseService::removeUnit(string name) {
         }
     } 
 }
+
+vector<ResponseUnit*> ResponseService::getDispatchedUnits(Incident* incident) {
+    vector<ResponseUnit*> dispatchedUnits;
+    for (ResponseUnit* unit : units) {
+        if (unit->getIncident() == incident) 
+            dispatchedUnits.push_back(unit);
+    }
+    return dispatchedUnits;
+}

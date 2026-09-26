@@ -8,7 +8,7 @@ RestrictAccessCommand::RestrictAccessCommand(AccessControlService* access, Campu
 RestrictAccessCommand::~RestrictAccessCommand() {}
 
 void RestrictAccessCommand::execute() {
-    wasRestricted = area->accessRestricted();
+    wasRestricted = area->accessIsRestricted();
     access->restrictAccess(area);
 }
 

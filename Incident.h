@@ -8,16 +8,16 @@
 #include "CampusComponent.h"
 
 class Incident {
+    friend class CampusCoordinator;
     private: 
         int id;
         vector<Report> reports; 
         CampusComponent* location;
         string description;
-        int severity;
         IncidentStatus* status;
     
     public: 
-        Incident(int id, CampusComponent* location, string description, int severity, IncidentStatus* status);
+        Incident(int id, CampusComponent* location, string description, IncidentStatus* status);
         ~Incident();
         void activate();
         void resolve();
@@ -26,6 +26,7 @@ class Incident {
         string getStatus();
         CampusComponent* getLocation();
         int getId();
+        string getDescription();
         void addReport(Report r);
         void removeReport(Report r);
 };

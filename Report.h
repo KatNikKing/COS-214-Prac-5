@@ -14,7 +14,7 @@ struct Report {
     ReportType type;
     bool restrictAccess;
 
-    Report(CampusComponent* affectedArea, Incident* incident, string message, ReportType type, bool restrictAccess) :
+    Report(Incident* incident, CampusComponent* affectedArea, ReportType type, string message = "", bool restrictAccess = false) :
             affectedArea(affectedArea), incident(incident), message(message), type(type), restrictAccess(restrictAccess) {}
 
     bool operator==(const Report& other) {

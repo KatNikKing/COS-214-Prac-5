@@ -16,11 +16,12 @@ void ResponseUnit::dispatch(Incident* incident, CampusComponent* location) {
 }
 
 void ResponseUnit::recall() {
+    incident = nullptr;
     setStatus(new Available);
 }
 
 void ResponseUnit::performDuty() {
-    cout << "Response Unit '" << name << "' ";
+    cout << service->toString() << " Response Unit '" << name << "' ";
     status->performDuty();
 }
 

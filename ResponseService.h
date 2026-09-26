@@ -16,6 +16,8 @@ class ResponseService : public Service {
         void recallUnit(string name);
         void addUnit(ResponseUnit* unit);
         void removeUnit(string name);
+        vector<ResponseUnit*> getDispatchedUnits(Incident* incident);
+        virtual string toString() = 0;
 };
 
 #endif

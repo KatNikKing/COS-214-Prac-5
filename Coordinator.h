@@ -18,6 +18,7 @@ class Coordinator {
         virtual ~Coordinator() = default;
         void addService(Service* service);
         void removeService(Service* service);
+        void removeAllServices();
         virtual void notify(Report report) = 0;
 };
 

@@ -25,3 +25,7 @@ void Coordinator::removeService(Service* service) {
         }
     }    
 }
+
+void Coordinator::removeAllServices() {
+    services.clear();
+}

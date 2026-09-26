@@ -14,3 +14,7 @@ void MedicalService::receiveReport(Report report) {
         }
     }
 }
+
+string MedicalService::toString() {
+    return "Medical";
+}

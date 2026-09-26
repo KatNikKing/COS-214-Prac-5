@@ -11,11 +11,7 @@ HandleIncidentCommand::~HandleIncidentCommand() {}
 
 void HandleIncidentCommand::execute() {
     incident->activate();
-
-    Report report(incident->getLocation(), incident,
-                  "Incident #" + std::to_string(incident->getId()) + " reported",
-                  ReportType::INCIDENT_REPORTED, false);
-    coordinator->notify(report);
+    coordinator->notify(Report(incident, incident->getLocation(), ReportType::INCIDENT_REPORTED));
     executed = true;
 }
 
@@ -25,11 +21,7 @@ void HandleIncidentCommand::undo() {
     }
 
     incident->cancel();
-
-    Report report(incident->getLocation(), incident,
-                  "Incident #" + std::to_string(incident->getId()) + " withdrawn",
-                  ReportType::INCIDENT_REPORT_WITHDRAWN, false);
-    coordinator->notify(report);
+    coordinator->notify(Report(incident, incident->getLocation(), ReportType::INCIDENT_REPORT_WITHDRAWN));
     executed = false;
 }
 

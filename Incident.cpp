@@ -4,7 +4,7 @@
 #include <vector>
 #include <algorithm>
 
-Incident::Incident(int id, CampusComponent* location, string description, int severity, IncidentStatus* status) : id(id), location(location), description(description), severity(severity), status(status){
+Incident::Incident(int id, CampusComponent* location, string description, IncidentStatus* status) : id(id), location(location), description(description), status(status){
 
 }
 
@@ -40,6 +40,10 @@ CampusComponent* Incident::getLocation(){
 }
 int Incident::getId(){
     return id;
+}
+
+string Incident::getDescription() {
+    return description;
 }
 
 void Incident::addReport(Report r){

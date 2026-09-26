@@ -8,7 +8,7 @@ RestoreAccessCommand::RestoreAccessCommand(AccessControlService* access, CampusC
 RestoreAccessCommand::~RestoreAccessCommand() {}
 
 void RestoreAccessCommand::execute() {
-    wasRestricted = area->accessRestricted();
+    wasRestricted = area->accessIsRestricted();
     access->restoreAccess(area);
 }
 
