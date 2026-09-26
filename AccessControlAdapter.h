@@ -6,6 +6,7 @@
 
 class AccessControlAdapter : public AccessControlService, private LegacyAccessControlSystem {
     public:
+        AccessControlAdapter(CampusComponent* campus);
         void restrictAccess(CampusComponent* area) override;
         void restoreAccess(CampusComponent* area) override;
 };

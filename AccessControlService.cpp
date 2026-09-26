@@ -4,7 +4,7 @@ void AccessControlService::receiveReport(Report report) {
     if (report.type == ReportType::ALERT_REQUIRED ||
         report.type == ReportType::AREA_UNSAFE ||
         report.type == ReportType::EVACUATION_REQUIRED) {
-            if (report.restrict)
+            if (report.restrictAccess)
                 restrictAccess(report.affectedArea);
             else
                 restoreAccess(report.affectedArea);

@@ -14,6 +14,7 @@ void Service::unregister() {
     }
 }
 void Service::report(Report report) {
+    report.incident->addReport(report);
     if (coordinator != nullptr) {
         coordinator->notify(report);
     }

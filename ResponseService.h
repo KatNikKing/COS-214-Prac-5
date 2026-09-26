@@ -6,7 +6,7 @@
 class ResponseUnit;
 
 class ResponseService : public Service {
-    private:
+    protected:
         vector<ResponseUnit*> units;
 
     public:

@@ -43,6 +43,10 @@ UnitStatus* ResponseUnit::getStatus() {
     return status;
 }
 
+Incident* ResponseUnit::getIncident() {
+    return incident;
+}
+
 CampusComponent* ResponseUnit::getLocation() {
     return location;
 }

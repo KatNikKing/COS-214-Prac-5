@@ -22,6 +22,7 @@ class ResponseUnit {
         string getName();
         void setStatus(UnitStatus* status);
         UnitStatus* getStatus();
+        Incident* getIncident();
         CampusComponent* getLocation();
         ResponseService* getService();
 };
