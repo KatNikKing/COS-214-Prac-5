@@ -18,6 +18,9 @@ class EmergencyDesk {
         int handleIncident(Incident* incident);
         int respondToFire(Incident* incident);
         void standDown(int steps);
+        bool manageIncident(Incident* incident);
+        void resolveIncident();
+        vector<ResponseUnit*> getDispatchedUnits();
         bool registerService(SecurityService* service);
         bool registerService(MedicalService* service);
         bool registerService(FacilitiesService* service);
@@ -32,6 +35,8 @@ class EmergencyDesk {
         FacilitiesService* facilities;
         AccessControlService* access;
         AlertService* alerts;
+        Incident* currentIncident;
+        vector<ResponseUnit*> dispatchedUnits;
 };
 
 #endif // EMERGENCY_DESK_H

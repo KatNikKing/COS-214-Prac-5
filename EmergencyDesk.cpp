@@ -5,12 +5,11 @@
 
 EmergencyDesk::EmergencyDesk(Coordinator* coordinator)
     : coordinator(coordinator != nullptr ? coordinator : new CampusCoordinator), console(new OperatorConsole), 
-      security(nullptr), medical(nullptr), facilities(nullptr), access(nullptr), alerts(nullptr) {
+      security(nullptr), medical(nullptr), facilities(nullptr), access(nullptr), alerts(nullptr), currentIncident(nullptr) {
       coordinator->removeAllServices();
 }
 
 EmergencyDesk::~EmergencyDesk() {
-    delete currentIncident;
     delete console;
 }
 
@@ -132,6 +131,66 @@ void EmergencyDesk::standDown(int steps) {
             break;
         }
     }
+}
+
+bool EmergencyDesk::manageIncident(Incident* incident) {
+    if (incident->getStatus() != "reported") {
+        cout << "[EmergencyDesk] Incident cannot be managed.\n";
+        return false;
+    }
+    if (currentIncident == nullptr) {
+        cout << "[EmergencyDesk] Resolve current incident first.\n";
+        return false;
+    }
+    
+    currentIncident = incident;
+    cout << "[EmergencyDesk] New incident being managed...\n"
+         << "[EmergencyDesk] Location: " << incident->getLocation()->getName() << endl
+         << "[EmergencyDesk] Description:\n" << incident->getDescription() << endl << endl;
+
+    cout << "[EmergencyDesk] Coordinating services...\n";
+    if (!console->submit(new HandleIncidentCommand(coordinator, incident))) {
+        cout << "[EmergencyDesk] Failed to handle incident.\n";
+        return false;
+    }
+    cout << endl;
+    
+    cout << "[EmergencyDesk] Reporting on dispatched units...\n";
+    if (security != nullptr) {
+        for (ResponseUnit* unit : security->getDispatchedUnits(incident))
+            dispatchedUnits.push_back(unit);
+    }
+    if (medical != nullptr) {
+        for (ResponseUnit* unit : medical->getDispatchedUnits(incident))
+            dispatchedUnits.push_back(unit);
+    }
+    if (facilities != nullptr) {
+        for (ResponseUnit* unit : facilities->getDispatchedUnits(incident))
+            dispatchedUnits.push_back(unit);
+    }
+    for (ResponseUnit* unit : dispatchedUnits) {
+        unit->performDuty();
+    }
+    for (ResponseUnit* unit : dispatchedUnits) {
+        unit->setStatus(new Operating);
+        unit->performDuty();
+    }
+    
+    return true;
+}
+
+vector<ResponseUnit*> EmergencyDesk::getDispatchedUnits() {
+    return dispatchedUnits;
+}
+
+void EmergencyDesk::resolveIncident() {
+    cout << "[EmergencyDesk] Resolving current incident...\n";
+    for (ResponseUnit* unit : dispatchedUnits) {
+        unit->recall();
+    }
+    currentIncident->resolve();
+    currentIncident = nullptr;
+    dispatchedUnits.clear();
 }
 
 bool EmergencyDesk::registerService(SecurityService* service) {
