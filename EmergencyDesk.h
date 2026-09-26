@@ -32,8 +32,6 @@ class EmergencyDesk {
         FacilitiesService* facilities;
         AccessControlService* access;
         AlertService* alerts;
-        Incident* currentIncident;
-        int steps;
 };
 
 #endif // EMERGENCY_DESK_H
