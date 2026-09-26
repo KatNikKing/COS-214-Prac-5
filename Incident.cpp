@@ -1,6 +1,8 @@
 #include "Incident.h"
 
 #include <string>
+#include <vector>
+#include <algorithm>
 
 Incident::Incident(int id, CampusComponent* location, string description, int severity, IncidentStatus* status) : id(id), location(location), description(description), severity(severity), status(status){
 
@@ -38,4 +40,15 @@ CampusComponent* Incident::getLocation(){
 }
 int Incident::getId(){
     return id;
+}
+
+void Incident::addReport(Report r){
+    reports.emplace_back(r);
+}
+
+void Incident::removeReport(Report r){
+    auto it = std::find(reports.begin(), reports.end(), r);
+    if (it != reports.end()) {
+        reports.erase(it); 
+    }
 }

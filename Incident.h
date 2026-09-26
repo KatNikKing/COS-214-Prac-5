@@ -1,12 +1,16 @@
 #pragma once 
 
 #include <string>
+#include <vector>
+#include <algorithm>
+#include "Report.h"
 #include "IncidentStatus.h"
 #include "CampusComponent.h"
 
 class Incident {
     private: 
         int id;
+        vector<Report> reports; 
         CampusComponent* location;
         string description;
         int severity;
@@ -22,4 +26,6 @@ class Incident {
         string getStatus();
         CampusComponent* getLocation();
         int getId();
+        void addReport(Report r);
+        void removeReport(Report r);
 };
