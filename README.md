@@ -11,8 +11,8 @@ directly.
 | Name | Student Number |
 |---|---|
 | Simon Vogel | u25087984 |
-| _TODO_ | _TODO_ |
-| _TODO_ | _TODO_ |
+| Tashil Haripersad | u25466004 |
+| Simnikiwe Dlamini  | u25141300 |
 
 ## Running the application (Docker — used for the demonstration)
 
