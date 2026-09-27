@@ -8,16 +8,30 @@ ResponseUnit::~ResponseUnit() {
 }
 
 void ResponseUnit::dispatch(Incident* incident, CampusComponent* location) {
-    if (incident != nullptr && location != nullptr) {
+    if (incident != nullptr && location != nullptr && dynamic_cast<Available*>(status) != nullptr) {
         this->incident = incident;
         this->location = location;
         setStatus(new Dispatched(location->getName()));
+        performDuty();
     }
 }
 
-void ResponseUnit::recall() {
-    incident = nullptr;
-    setStatus(new Available);
+void ResponseUnit::operate() {
+    if (dynamic_cast<Dispatched*>(status) != nullptr) {
+        setStatus(new Operating);
+        performDuty(); 
+    }
+}
+
+void ResponseUnit::recall(bool avail) {
+    if (dynamic_cast<Operating*>(status) != nullptr || dynamic_cast<Unavailable*>(status) != nullptr) {
+        incident = nullptr;
+        if (avail)
+            setStatus(new Available);
+        else   
+            setStatus(new Unavailable);
+        performDuty();
+    }       
 }
 
 void ResponseUnit::performDuty() {

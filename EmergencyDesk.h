@@ -24,7 +24,7 @@ class EmergencyDesk {
         vector<ResponseUnit*> dispatchedUnits;
 
     public:
-        EmergencyDesk(Coordinator* coordinator);
+        EmergencyDesk(Coordinator* coordinator, OperatorConsole* console);
         ~EmergencyDesk();
         int handleIncident(Incident* incident);
         int respondToFire(Incident* incident);

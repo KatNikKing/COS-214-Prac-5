@@ -16,7 +16,8 @@ class ResponseUnit {
         ResponseUnit(string name, ResponseService* service);
         ~ResponseUnit();
         void dispatch(Incident* incident, CampusComponent* location);
-        void recall();
+        void operate();
+        void recall(bool avail = true);
         void performDuty();
         void report(Report report);
         string getName();

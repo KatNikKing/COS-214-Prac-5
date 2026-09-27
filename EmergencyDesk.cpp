@@ -7,14 +7,13 @@
 #include "HandleIncidentCommand.h"
 #include "ResponseUnit.h"
 
-EmergencyDesk::EmergencyDesk(Coordinator* coordinator)
-    : coordinator(coordinator != nullptr ? coordinator : new CampusCoordinator), console(new OperatorConsole), 
-      security(nullptr), medical(nullptr), facilities(nullptr), access(nullptr), alerts(nullptr), currentIncident(nullptr) {
-      coordinator->removeAllServices();
+EmergencyDesk::EmergencyDesk(Coordinator* coordinator, OperatorConsole* console) 
+             : coordinator(coordinator), console(console), security(nullptr), medical(nullptr), 
+             facilities(nullptr), access(nullptr), alerts(nullptr), currentIncident(nullptr) {
+    coordinator->removeAllServices();
 }
 
 EmergencyDesk::~EmergencyDesk() {
-    delete console;
 }
 
 int EmergencyDesk::handleIncident(Incident* incident) {
@@ -45,17 +44,9 @@ int EmergencyDesk::handleIncident(Incident* incident) {
         for (ResponseUnit* unit : facilities->getDispatchedUnits(incident))
             dispatchedUnits.push_back(unit);
     }
-    for (ResponseUnit* unit : dispatchedUnits) {
-        unit->performDuty();
-    }
-    for (ResponseUnit* unit : dispatchedUnits) {
-        unit->setStatus(new Operating);
-        unit->performDuty();
-    }
-    for (ResponseUnit* unit : dispatchedUnits) {
-        unit->recall();
-        unit->performDuty();
-    }
+    for (ResponseUnit* unit : dispatchedUnits) unit->operate();
+    for (ResponseUnit* unit : dispatchedUnits) unit->recall();
+    
     cout << endl;
 
     incident->resolve();
@@ -107,17 +98,8 @@ int EmergencyDesk::respondToFire(Incident* incident) {
         for (ResponseUnit* unit : facilities->getDispatchedUnits(incident))
             dispatchedUnits.push_back(unit);
     }
-    for (ResponseUnit* unit : dispatchedUnits) {
-        unit->performDuty();
-    }
-    for (ResponseUnit* unit : dispatchedUnits) {
-        unit->setStatus(new Operating);
-        unit->performDuty();
-    }
-    for (ResponseUnit* unit : dispatchedUnits) {
-        unit->recall();
-        unit->performDuty();
-    }
+    for (ResponseUnit* unit : dispatchedUnits) unit->operate();
+    for (ResponseUnit* unit : dispatchedUnits) unit->recall();
     incident->resolve();
     cout << endl;
 
@@ -172,13 +154,7 @@ bool EmergencyDesk::manageIncident(Incident* incident) {
         for (ResponseUnit* unit : facilities->getDispatchedUnits(incident))
             dispatchedUnits.push_back(unit);
     }
-    for (ResponseUnit* unit : dispatchedUnits) {
-        unit->performDuty();
-    }
-    for (ResponseUnit* unit : dispatchedUnits) {
-        unit->setStatus(new Operating);
-        unit->performDuty();
-    }
+    for (ResponseUnit* unit : dispatchedUnits) unit->operate();
     
     return true;
 }
