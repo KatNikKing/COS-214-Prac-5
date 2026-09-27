@@ -17,7 +17,7 @@ EmergencyDesk::~EmergencyDesk() {
 }
 
 int EmergencyDesk::handleIncident(Incident* incident) {
-    if (incident->getStatus() != "reported") return;
+    if (incident->getStatus() != "reported") return -1;
     cout << "==========NEW INCIDENT REPORTED==========\n"
          << "[EmergencyDesk] Location: " << incident->getLocation()->getName() << endl
          << "[EmergencyDesk] Description:\n" << incident->getDescription() << endl << endl;
@@ -55,7 +55,7 @@ int EmergencyDesk::handleIncident(Incident* incident) {
 }
 
 int EmergencyDesk::respondToFire(Incident* incident) {
-    if (incident->getStatus() != "reported") return;
+    if (incident->getStatus() != "reported") return -1;
     cout << "==========FIRE EMERGENCY REPORTED==========\n"
          << "[EmergencyDesk] Location: " << incident->getLocation()->getName() << endl
          << "[EmergencyDesk] Description:\n" << incident->getDescription() << endl << endl;
@@ -120,6 +120,10 @@ void EmergencyDesk::standDown(int steps) {
 }
 
 bool EmergencyDesk::manageIncident(Incident* incident) {
+    if (currentIncident == nullptr) {
+       cout << "[EmergencyDesk] Resolve current incident first.\n";
+       return false;
+    }
     if (incident->getStatus() != "reported") {
         cout << "[EmergencyDesk] Incident cannot be managed.\n";
         return false;
@@ -177,7 +181,7 @@ bool EmergencyDesk::registerService(SecurityService* service) {
     if (security != nullptr || service == nullptr) 
         return false;
     security = service;
-    coordinator->addService(security);
+    security->registerService(coordinator);
     return true;
 }
 
@@ -185,7 +189,7 @@ bool EmergencyDesk::registerService(MedicalService* service) {
     if (medical != nullptr || service == nullptr) 
         return false;
     medical = service;
-    coordinator->addService(medical);
+    medical->registerService(coordinator);
     return true;
 }
 
@@ -193,7 +197,7 @@ bool EmergencyDesk::registerService(FacilitiesService* service) {
     if (facilities != nullptr || service == nullptr) 
         return false;
     facilities = service;
-    coordinator->addService(facilities);
+    facilities->registerService(coordinator);
     return true;
 }
 
@@ -201,7 +205,7 @@ bool EmergencyDesk::registerService(AccessControlService* service) {
     if (access != nullptr || service == nullptr) 
         return false;
     access = service;
-    coordinator->addService(access);
+    access->registerService(coordinator);
     return true;
 }
 
@@ -209,6 +213,6 @@ bool EmergencyDesk::registerService(AlertService* service) {
     if (alerts != nullptr || service == nullptr) 
         return false;
     alerts = service;
-    coordinator->addService(alerts);
+    alerts->registerService(coordinator);
     return true;
 }

@@ -19,7 +19,7 @@ void LegacyAccessControlSystem::deactivateLock(int unitCode) {
         if (unit != nullptr) {
             unit->restoreAccess();
             cout << "Access to Campus Component '" << unit->getName() 
-                 << "' (Code: " << to_string(unitCode) << ") has been restricted.\n";
+                 << "' (Code: " << to_string(unitCode) << ") has been restored.\n";
         }
     }
 }
