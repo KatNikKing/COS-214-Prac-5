@@ -3,9 +3,10 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "Report.h"
 #include "IncidentStatus.h"
 #include "CampusComponent.h"
+
+struct Report;
 
 class Incident {
     friend class CampusCoordinator;

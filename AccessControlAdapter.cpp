@@ -1,13 +1,14 @@
 #include "AccessControlAdapter.h"
 
-AccessControlAdapter::AccessControlAdapter(CampusComponent* campus) : LegacyAccessControlSystem(campus) {}
+AccessControlAdapter::AccessControlAdapter(LegacyAccessControlSystem* legacyAccessControl) 
+                    : legacyAccessControl(legacyAccessControl) {}
 
 void AccessControlAdapter::restrictAccess(CampusComponent* area) {
     if (area != nullptr)
-        activateLock(area->getCode());
+        legacyAccessControl->activateLock(area->getCode());
 }
 
 void AccessControlAdapter::restoreAccess(CampusComponent* area) {
     if (area != nullptr)
-        deactivateLock(area->getCode());
+        legacyAccessControl->deactivateLock(area->getCode());
 }

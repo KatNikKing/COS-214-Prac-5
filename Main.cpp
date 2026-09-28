@@ -1,51 +1,14 @@
-#include <iostream>
-
 #include "EmergencyDesk.h"
 
-#include "Service.h"
-#include "AlertService.h"
-
-#include "Coordinator.h"
-#include "CampusCoordinator.h"
-
-#include "ResponseService.h"
-#include "SecurityService.h"
-#include "MedicalService.h"
-#include "FacilitiesService.h"
-
-#include "AccessControlService.h"
+#include "CampusZone.h"
+#include "CampusUnit.h"
 #include "AccessControlAdapter.h"
 #include "LegacyAccessControlSystem.h"
 
-#include "OperatorConsole.h"
-#include "Command.h" //Abstract
-#include "HandleIncidentCommand.h"
-#include "SendAlertCommand.h"
-#include "RestoreAccessCommand.h"
-#include "RestrictAccessCommand.h"
-#include "DispatchUnitCommand.h"
-
-#include "CampusZone.h"
-#include "CampusComponent.h"
-#include "CampusUnit.h"
-
-#include "Report.h" //Weird
-
-#include "ResponseUnit.h"
-#include "UnitStatus.h" //Abstract, child classes here too
-
-#include "Incident.h"
-#include "IncidentStatus.h" //Abstract, child classes here too
-//Lordy lordy lord almighty
-
 int main(){
-
-    std::cout<<"\n\n--------------------------------------------------\n";
-    std::cout<<"Setting up the Campus\n";
-    std::cout<<"--------------------------------------------------\n\n";
+    // SETTING UP THE CAMPUS
 
     CampusZone* campus = new CampusZone("Main Campus");
-
     CampusZone* northCampus = new CampusZone("North Campus");
     CampusZone* engineeringBuilding = new CampusZone("Engineering Building");
     CampusUnit* serverRoom   = new CampusUnit("IT Server Room");
@@ -92,11 +55,8 @@ int main(){
     campus->add(southCampus);
     campus->add(centralCampus);
 
-    std::cout<<"\n\n--------------------------------------------------\n";
-    std::cout<<"Making units and services\n";
-    std::cout<<"--------------------------------------------------\n\n";
+    // MAKING UNITS AND SERVICES
 
-    //Make units and services (ResponseServices)
     SecurityService security; 
     ResponseUnit* securityUnit = new ResponseUnit("IBS Security", &security);
     security.addUnit(securityUnit);
@@ -109,32 +69,27 @@ int main(){
     ResponseUnit* facilityUnit = new ResponseUnit("TukTuk central", &facilities);
     facilities.addUnit(facilityUnit);
 
-    //Other services
     AlertService* alerts = new AlertService();
-    AccessControlService* accessControl = new AccessControlAdapter(campus);
+    LegacyAccessControlSystem* legacyAccessControl = new LegacyAccessControlSystem(campus);
+    AccessControlService* accessControl = new AccessControlAdapter(legacyAccessControl);
 
-    //Empty Coordinator - services are only added once the EmergencyDesk registers them below
     Coordinator* c = new CampusCoordinator();
-
-    //New emergency desk
     OperatorConsole* oc = new OperatorConsole(); 
-    EmergencyDesk* emDesk = new EmergencyDesk(c, oc);
 
-    //Adding services to the emergencyDesk
+    EmergencyDesk* emDesk = new EmergencyDesk(c, oc);
     emDesk->registerService(&security);
     emDesk->registerService(&medic);
     emDesk->registerService(&facilities);
     emDesk->registerService(alerts);
     emDesk->registerService(accessControl);
 
-    std::cout<<"\n\n--------------------------------------------------\n";
+    std::cout<<"--------------------------------------------------\n";
     std::cout<<"Running Incident scenario no. 1 (Respond to fire)\n";
     std::cout<<"--------------------------------------------------\n\n";
 
 
     //Incident no 1: student had a heart-attack at resHallA, dispatch medical
     Incident* HeartAttackAtResA = new Incident(1000, resHallA, "A student had a heart attack at resHallA", new Reported);
-    std::cout<<"Responding to Fire method: \n";
     emDesk->respondToFire(HeartAttackAtResA);
 
     std::cout<<"\n[Main] Operator decides to stand down the last two actions taken...\n";
@@ -163,32 +118,24 @@ int main(){
     GasLeakAtGym->addReport(*r3);
     GasLeakAtGym->addReport(*r4);
 
-    GasLeakAtGym->activate();
-    std::cout<<"[Main] Notifying the Coordinator directly with an incident reported report...\n";
-    c->notify(Report(GasLeakAtGym, GasLeakAtGym->getLocation(), ReportType::INCIDENT_REPORTED));
+    emDesk->manageIncident(GasLeakAtGym);
 
     std::cout<<"\n[Main] Dispatched units reporting changes mid-incident...\n";
     Report* r5 = new Report(GasLeakAtGym, gymnasium, ReportType::AREA_UNSAFE, "Gas fumes spreading fast, area unsafe", true);
     securityUnit->report(*r5);
-
     Report* r6 = new Report(GasLeakAtGym, gymnasium, ReportType::EVACUATION_REQUIRED, "Leak worsening, evacuation required", true);
     facilityUnit->report(*r6);
 
-    std::cout<<"\n[Main] Standing dispatched units down...\n";
-    securityUnit->recall();
-    facilityUnit->recall();
-    GasLeakAtGym->resolve();
+    emDesk->resolveIncident();
 
-    std::cout<<"\n\n--------------------------------------------------\n";
-    std::cout<<"Cleaning up pointers\n";
-    std::cout<<"--------------------------------------------------\n\n";
-
-
+    // CLEANING UP POINTERS
+    
     delete emDesk;
     delete oc;
     delete c;
     delete alerts;
     delete accessControl;
+    delete legacyAccessControl;
     delete HeartAttackAtResA;
     delete HellhoundsInChemLab;
     delete r1;

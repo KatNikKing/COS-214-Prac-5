@@ -1,15 +1,23 @@
 #ifndef EMERGENCY_DESK_H
 #define EMERGENCY_DESK_H
 
-#include "Coordinator.h"
+#include "CampusCoordinator.h"
 #include "OperatorConsole.h"
 #include "SecurityService.h"
 #include "MedicalService.h"
 #include "FacilitiesService.h"
 #include "AccessControlService.h"
 #include "AlertService.h"
+
 #include "Incident.h"
 #include "CampusComponent.h"
+#include "ResponseUnit.h"
+
+#include "RestrictAccessCommand.h"
+#include "RestoreAccessCommand.h"
+#include "DispatchUnitCommand.h"
+#include "SendAlertCommand.h"
+#include "HandleIncidentCommand.h"
 
 class EmergencyDesk {
     private:

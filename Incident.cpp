@@ -1,8 +1,5 @@
 #include "Incident.h"
-
-#include <string>
-#include <vector>
-#include <algorithm>
+#include "Report.h"
 
 Incident::Incident(int id, CampusComponent* location, string description, IncidentStatus* status) : id(id), location(location), description(description), status(status){
 

@@ -1,7 +1,7 @@
 #include "CampusComponent.h"
 
 int CampusComponent::codeCount = 0;
-CampusComponent::CampusComponent(string name) : name(name), accessRestricted(false), code(++codeCount) {}
+CampusComponent::CampusComponent(string name) : name(name), code(++codeCount), accessRestricted(false)  {}
 
 void CampusComponent::add(CampusComponent* component) {}
 

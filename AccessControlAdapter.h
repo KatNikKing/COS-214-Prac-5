@@ -4,9 +4,11 @@
 #include "AccessControlService.h"
 #include "LegacyAccessControlSystem.h"
 
-class AccessControlAdapter : public AccessControlService, private LegacyAccessControlSystem {
+class AccessControlAdapter : public AccessControlService {
+    private:
+        LegacyAccessControlSystem* legacyAccessControl;
     public:
-        AccessControlAdapter(CampusComponent* campus);
+        AccessControlAdapter(LegacyAccessControlSystem* legacyAccessControl);
         void restrictAccess(CampusComponent* area) override;
         void restoreAccess(CampusComponent* area) override;
 };

@@ -1,11 +1,4 @@
 #include "EmergencyDesk.h"
-#include "CampusCoordinator.h"
-#include "RestrictAccessCommand.h"
-#include "OperatorConsole.h"
-#include "DispatchUnitCommand.h"
-#include "SendAlertCommand.h"
-#include "HandleIncidentCommand.h"
-#include "ResponseUnit.h"
 
 EmergencyDesk::EmergencyDesk(Coordinator* coordinator, OperatorConsole* console) 
              : coordinator(coordinator), console(console), security(nullptr), medical(nullptr), 
@@ -120,16 +113,12 @@ void EmergencyDesk::standDown(int steps) {
 }
 
 bool EmergencyDesk::manageIncident(Incident* incident) {
-    if (currentIncident == nullptr) {
+    if (currentIncident != nullptr) {
        cout << "[EmergencyDesk] Resolve current incident first.\n";
        return false;
     }
     if (incident->getStatus() != "reported") {
         cout << "[EmergencyDesk] Incident cannot be managed.\n";
-        return false;
-    }
-    if (currentIncident == nullptr) {
-        cout << "[EmergencyDesk] Resolve current incident first.\n";
         return false;
     }
     
